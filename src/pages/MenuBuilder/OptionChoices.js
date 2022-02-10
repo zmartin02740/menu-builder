@@ -1,0 +1,88 @@
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import AddButton from '../../common/AddButton'
+import ModalForm from '../../common/ModalForm'
+import ObjectCreation from '../../common/ObjectCreation'
+import Section from '../../common/Section';
+
+export function ItemOptions() {
+  const [showModal, setShowModal] = useState(false)
+  let currentId = useSelector(state => state.currentId)
+  let name = useSelector(state => state.name)
+  let price = useSelector(state => state.price)
+  let sections = useSelector(state => state.sections)
+  let itemsId = useSelector(state => state.itemsId)
+  let itemOptionsId = useSelector(state => state.itemOptionsId)
+  let menuSelectionId = useSelector(state => state.menuSelectionId)
+  const dispatch = useDispatch()
+
+
+
+  let showOptions = sections.length > 0 &&
+    menuSelectionId !== null &&
+    itemsId !== null &&
+    itemOptionsId !== null
+
+  let optionChoices
+  if (showOptions) {
+    let items = sections.find(section => section.id === menuSelectionId)
+    let itemOptions = items.items.find(item => item.id === itemsId).options
+    optionChoices = itemOptions.find(option => option.id === itemOptionsId).choices
+    console.log(optionChoices)
+  }
+
+  const handleClick = () => {
+    setShowModal(true)
+  }
+
+  const handleSelectID = (id) => {
+    // dispatch({ type: 'SELECT_ITEM_OPTIONS_ID', payload: id })
+  }
+
+  const handleSubmission = (event) => {
+    event.preventDefault()
+    const dispatchType = 'ADD_TO_OPTION_CHOICES'
+    const submissionObject = ObjectCreation(dispatchType, currentId, name, price)
+    dispatch({ type: 'UPDATE_ID' })
+    console.log(submissionObject)
+    dispatch({
+      type: dispatchType, payload: {
+        itemOptionObj: submissionObject,
+        itemsID: itemsId,
+        itemOptionsId,
+        menuSelectID: menuSelectionId
+      }
+    })
+  }
+
+  return (
+    <Row>
+      Option Choices
+        {showOptions &&
+        <AddButton name="Add" handleClick={handleClick} />}
+      {optionChoices && <Section
+        handleSelectID={handleSelectID}
+        items={optionChoices}
+      />}
+      <ModalForm
+        nameDispatch="UPDATE_NAME"
+        dispatchType="ADD_TO_OPTION_CHOICES"
+        formName="Item Options Section"
+        inputName="Option Choice Name"
+        inputNameHint="What option choice would you like to add"
+        inputPrice="Price"
+        inputPriceHint="What would you like the cost of this option be?"
+        name={name}
+        handleSubmission={handleSubmission}
+        price={price}
+        priceDispatch="UPDATE_PRICE"
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
+    </Row>
+  )
+}
+
+export default ItemOptions
