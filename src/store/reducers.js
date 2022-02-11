@@ -18,14 +18,10 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ADD_TO_ITEM_OPTIONS:
       const { itemOption, itemsId, menuSelectId } = action.payload
       const sections = state.sections
-      const items = sections.find(section => {
-        return section.id === menuSelectId
-      })
-
+      const items = sections.find(section => section.id === menuSelectId)
       const updatedItemChoices =
-        items.items.find(option => {
-          return option.id === itemsId
-        })
+        items.items.find(option => option.id === itemsId)
+
       updatedItemChoices.options.push(itemOption)
       return {
         ...state,
@@ -36,9 +32,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.ADD_TO_ITEMS:
       const { item, menuSelectionId } = action.payload
       const updatedSections = state.sections
-      const updatedItems = updatedSections.find(section => {
-        return section.id === menuSelectionId
-      })
+      const updatedItems = updatedSections.find(section =>
+        section.id === menuSelectionId)
+
       updatedItems.items.push(item)
       return {
         ...state,
@@ -58,18 +54,17 @@ const reducer = (state = initialState, action) => {
         itemOptionsId,
         menuSelectID
       } = action.payload
-      const menuSections = state.sections
-      const menuItems = menuSections.find(section => {
-        return section.id === menuSelectID
-      })
 
+      const menuSections = state.sections
+      const menuItems = menuSections.find(section =>
+        section.id === menuSelectID)
       const itemOptions =
-        menuItems.items.find(option => {
-          return option.id === itemsID
-        })
-      const optionChoices = itemOptions.options.find(option => option.id === itemOptionsId)
+        menuItems.items.find(option =>
+          option.id === itemsID)
+      const optionChoices =
+        itemOptions.options.find(option => option.id === itemOptionsId)
+
       optionChoices.choices.push(itemOptionObj)
-      console.log(optionChoices)
       return {
         ...state,
         sections: menuSections
