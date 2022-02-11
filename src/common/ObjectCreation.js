@@ -1,4 +1,3 @@
-import React from 'react'
 import { textValidation, numberValidation } from './InputValidations'
 
 // Creates an object depending on the column the user added an item to

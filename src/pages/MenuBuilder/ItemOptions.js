@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import AddButton from '../../common/AddButton'
 import ModalForm from '../../common/ModalForm'
@@ -9,11 +9,14 @@ import Section from '../../common/Section';
 
 export function ItemOptions() {
   const [showModal, setShowModal] = useState(false)
+
   let currentId = useSelector(state => state.currentId)
+  let itemOptionsId = useSelector(state => state.itemOptionsId)
   let name = useSelector(state => state.name)
   let sections = useSelector(state => state.sections)
   let itemsId = useSelector(state => state.itemsId)
   let menuSelectionId = useSelector(state => state.menuSelectionId)
+
   const dispatch = useDispatch()
 
 
@@ -28,10 +31,12 @@ export function ItemOptions() {
     itemOptions = items.items.find(item => item.id === itemsId).options
   }
 
+  // Open Modal
   const handleClick = () => {
     setShowModal(true)
   }
 
+  // Selects the id of the chosen item
   const handleSelectID = (id) => {
     dispatch({ type: 'SELECT_ITEM_OPTIONS_ID', payload: id })
   }
@@ -54,14 +59,19 @@ export function ItemOptions() {
   }
 
   return (
-    <Row>
-      Item Options
+    <Col>
+      <Row>
+        Item Options
         {showItemOptions &&
-        <AddButton name="Add" handleClick={handleClick} />}
-      {itemOptions && <Section
-        handleSelectID={handleSelectID}
-        items={itemOptions}
-      />}
+          <AddButton name="Add" handleClick={handleClick} />}
+      </Row>
+      <Row>
+        {itemOptions && <Section
+          handleSelectID={handleSelectID}
+          id={itemOptionsId}
+          items={itemOptions}
+        />}
+      </Row>
       <ModalForm
         nameDispatch="UPDATE_NAME"
         dispatchType="ADD_TO_ITEM_OPTIONS"
@@ -73,7 +83,7 @@ export function ItemOptions() {
         showModal={showModal}
         setShowModal={setShowModal}
       />
-    </Row>
+    </Col>
   )
 }
 

@@ -8,6 +8,7 @@ const initialState = {
   itemsId: null,
   itemOptionsId: null,
   menuSelectionId: null,
+  optionChoicesId: null,
   price: '0.00',
   priceWarning: '',
   showModal: false,
@@ -101,6 +102,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         itemsId: null,
         menuSelectionId: action.payload
+      }
+
+    case actionTypes.SELECT_OPTION_CHOICES_ID:
+      return {
+        ...state,
+        optionChoicesId: action.payload
       }
 
     case actionTypes.SHOW_MODAL:
