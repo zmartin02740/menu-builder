@@ -10,6 +10,7 @@ import ObjectCreation from '../../common/ObjectCreation'
 export function MenuSections() {
   const [showModal, setShowModal] = useState(false)
   let name = useSelector(state => state.name)
+  let nameWarning = useSelector(state => state.nameWarning)
   let currentId = useSelector(state => state.currentId)
   let sections = useSelector(state => state.sections)
   const dispatch = useDispatch()
@@ -24,13 +25,18 @@ export function MenuSections() {
 
   const handleSubmission = (event) => {
     event.preventDefault()
+    // if (nameWarning.length > 0) return
     const dispatchType = "ADD_TO_MENU_SECTION"
-    const submissionObject = ObjectCreation(dispatchType, currentId, name)
+    const submissionArr = ObjectCreation(dispatchType, currentId, name)
 
+    if (submissionArr[1].length > 0) {
+      return dispatch({ type: 'UPDATE_NAME_WARNING', payload: submissionArr[1] })
+    }
+    dispatch({ type: 'UPDATE_NAME_WARNING', payload: '' })
     dispatch({ type: 'UPDATE_ID' })
-    dispatch({ type: dispatchType, payload: submissionObject })
-    dispatch({ type: 'CLOSE_MODAL' })
+    dispatch({ type: dispatchType, payload: submissionArr[0] })
     dispatch({ type: 'UPDATE_NAME', payload: '' })
+    setShowModal(false)
   }
   return (
     <Row>

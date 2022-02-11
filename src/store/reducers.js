@@ -2,15 +2,18 @@ import * as actionTypes from './actions'
 
 const initialState = {
   name: '',
+  nameWarning: '',
   currentFormInput: '',
   currentId: 0,
   itemsId: null,
   itemOptionsId: null,
   menuSelectionId: null,
-  price: 0,
+  price: '0.00',
+  priceWarning: '',
   showModal: false,
   sections: [],
-  title: ''
+  title: '',
+  titleWarning: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -69,22 +72,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         sections: menuSections
       }
+
     case actionTypes.CLOSE_MODAL:
       return {
         ...state,
         showModal: false
       }
 
-    case actionTypes.CURRENT_FORM_INPUT:
-      return {
-        ...state,
-        currentFormInput: action.payload
-      }
     case actionTypes.UPDATE_ID:
       return {
         ...state,
         currentId: state.currentId + 1
       }
+
     case actionTypes.SELECT_ITEMS_ID:
       return {
         ...state,
@@ -115,16 +115,34 @@ const reducer = (state = initialState, action) => {
         name: action.payload
       }
 
+    case actionTypes.UPDATE_NAME_WARNING:
+      return {
+        ...state,
+        nameWarning: action.payload
+      }
+
     case actionTypes.UPDATE_PRICE:
       return {
         ...state,
         price: action.payload
       }
 
+    case actionTypes.UPDATE_PRICE_WARNING:
+      return {
+        ...state,
+        priceWarning: action.payload
+      }
+
     case actionTypes.UPDATE_TITLE:
       return {
         ...state,
         title: action.payload
+      }
+
+    case actionTypes.UPDATE_TITLE_WARNING:
+      return {
+        ...state,
+        titleWarning: action.payload
       }
 
     default:

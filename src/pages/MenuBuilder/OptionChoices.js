@@ -39,16 +39,28 @@ export function ItemOptions() {
   const handleSubmission = (event) => {
     event.preventDefault()
     const dispatchType = 'ADD_TO_OPTION_CHOICES'
-    const submissionObject = ObjectCreation(dispatchType, currentId, name, price)
+    const submissionArr = ObjectCreation(dispatchType, currentId, name, price)
+
+    if (submissionArr[1].length > 0 || submissionArr[2].length > 0) {
+      dispatch({ type: 'UPDATE_NAME_WARNING', payload: submissionArr[1] })
+      dispatch({ type: 'UPDATE_PRICE_WARNING', payload: submissionArr[2] })
+      return
+    }
+
+    dispatch({ type: 'UPDATE_NAME_WARNING', payload: '' })
+    dispatch({ type: 'UPDATE_PRICE_WARNING', payload: '' })
+    dispatch({ type: 'UPDATE_NAME', payload: '' })
+    dispatch({ type: 'UPDATE_PRICE', payload: '0.00' })
     dispatch({ type: 'UPDATE_ID' })
     dispatch({
       type: dispatchType, payload: {
-        itemOptionObj: submissionObject,
+        itemOptionObj: submissionArr[0],
         itemsID: itemsId,
         itemOptionsId,
         menuSelectID: menuSelectionId
       }
     })
+    setShowModal(false)
   }
 
   return (
