@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Button from 'react-bootstrap/Button'
+import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import AddButton from '../../common/AddButton'
 import ModalForm from '../../common/ModalForm'
@@ -11,6 +11,7 @@ export function ItemOptions() {
   const [showModal, setShowModal] = useState(false)
   let currentId = useSelector(state => state.currentId)
   let name = useSelector(state => state.name)
+  let optionChoicesId = useSelector(state => state.optionChoicesId)
   let price = useSelector(state => state.price)
   let sections = useSelector(state => state.sections)
   let itemsId = useSelector(state => state.itemsId)
@@ -32,13 +33,20 @@ export function ItemOptions() {
     optionChoices = itemOptions.find(option => option.id === itemOptionsId).choices
   }
 
+  // Opens Modal
   const handleClick = () => {
     setShowModal(true)
+  }
+
+  // Selects the chosen items id
+  const handleSelectID = (id) => {
+    dispatch({ type: 'SELECT_OPTION_CHOICES_ID', payload: id })
   }
 
   const handleSubmission = (event) => {
     event.preventDefault()
     const dispatchType = 'ADD_TO_OPTION_CHOICES'
+
     const submissionArr = ObjectCreation(dispatchType, currentId, name, price)
 
     if (submissionArr[1].length > 0 || submissionArr[2].length > 0) {
@@ -64,13 +72,19 @@ export function ItemOptions() {
   }
 
   return (
-    <Row>
-      Option Choices
+    <Col>
+      <Row>
+        Option Choices
         {showOptions &&
-        <AddButton name="Add" handleClick={handleClick} />}
-      {optionChoices && <Section
-        items={optionChoices}
-      />}
+          <AddButton name="Add" handleClick={handleClick} />}
+      </Row>
+      <Row>
+        {optionChoices && <Section
+          handleSelectID={handleSelectID}
+          id={optionChoicesId}
+          items={optionChoices}
+        />}
+      </Row>
       <ModalForm
         nameDispatch="UPDATE_NAME"
         dispatchType="ADD_TO_OPTION_CHOICES"
@@ -86,7 +100,7 @@ export function ItemOptions() {
         showModal={showModal}
         setShowModal={setShowModal}
       />
-    </Row>
+    </Col>
   )
 }
 
