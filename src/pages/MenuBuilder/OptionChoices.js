@@ -30,15 +30,10 @@ export function ItemOptions() {
     let items = sections.find(section => section.id === menuSelectionId)
     let itemOptions = items.items.find(item => item.id === itemsId).options
     optionChoices = itemOptions.find(option => option.id === itemOptionsId).choices
-    console.log(optionChoices)
   }
 
   const handleClick = () => {
     setShowModal(true)
-  }
-
-  const handleSelectID = (id) => {
-    // dispatch({ type: 'SELECT_ITEM_OPTIONS_ID', payload: id })
   }
 
   const handleSubmission = (event) => {
@@ -46,7 +41,6 @@ export function ItemOptions() {
     const dispatchType = 'ADD_TO_OPTION_CHOICES'
     const submissionObject = ObjectCreation(dispatchType, currentId, name, price)
     dispatch({ type: 'UPDATE_ID' })
-    console.log(submissionObject)
     dispatch({
       type: dispatchType, payload: {
         itemOptionObj: submissionObject,
@@ -63,7 +57,6 @@ export function ItemOptions() {
         {showOptions &&
         <AddButton name="Add" handleClick={handleClick} />}
       {optionChoices && <Section
-        handleSelectID={handleSelectID}
         items={optionChoices}
       />}
       <ModalForm
