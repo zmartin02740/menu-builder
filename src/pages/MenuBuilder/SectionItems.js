@@ -10,6 +10,7 @@ import Section from '../../common/Section';
 export function SectionItems() {
   const [showModal, setShowModal] = useState(false)
   let currentId = useSelector(state => state.currentId)
+  const titleWarning = useSelector(state => state.titleWarning)
   let title = useSelector(state => state.title)
   let price = useSelector(state => state.price)
   let sections = useSelector(state => state.sections)
@@ -33,10 +34,21 @@ export function SectionItems() {
   const handleSubmission = (event) => {
     event.preventDefault()
     const dispatchType = 'ADD_TO_ITEMS'
-    const submissionObject = ObjectCreation(dispatchType, currentId, null, price, title)
+    const submissionArr = ObjectCreation(dispatchType, currentId, null, price, title)
 
+    if (submissionArr[1].length > 0 || submissionArr[2].length > 0) {
+      dispatch({ type: 'UPDATE_TITLE_WARNING', payload: submissionArr[1] })
+      dispatch({ type: 'UPDATE_PRICE_WARNING', payload: submissionArr[2] })
+      return
+    }
+
+    dispatch({ type: 'UPDATE_TITLE_WARNING', payload: '' })
+    dispatch({ type: 'UPDATE_PRICE_WARNING', payload: '' })
     dispatch({ type: 'UPDATE_ID' })
-    dispatch({ type: dispatchType, payload: { item: submissionObject, menuSelectionId } })
+    dispatch({ type: 'UPDATE_PRICE', payload: '0.00' })
+    dispatch({ type: 'UPDATE_TITLE', payload: '' })
+    dispatch({ type: dispatchType, payload: { item: submissionArr[0], menuSelectionId } })
+    setShowModal(false)
   }
   return (
     <Row>

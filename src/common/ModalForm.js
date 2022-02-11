@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import TextInput from '../common/TextInput'
+import Warning from './Warning';
 
 export function ModalForm({
   dispatchType,
@@ -24,7 +25,9 @@ export function ModalForm({
   showModal,
   setShowModal
 }) {
-  const dispatch = useDispatch()
+  const nameWarning = useSelector(state => state.nameWarning)
+  const priceWarning = useSelector(state => state.priceWarning)
+  const titleWarning = useSelector(state => state.titleWarning)
   const handleClose = () => setShowModal(false)
   return (
     <>
@@ -41,6 +44,7 @@ export function ModalForm({
               value={name}
               title={inputName}
             />}
+          <Warning input={nameWarning} />
           {title !== null &&
             <TextInput
               dispatchType={titleDispatch}
@@ -48,6 +52,7 @@ export function ModalForm({
               value={title}
               title={inputTitle}
             />}
+          <Warning input={titleWarning} />
           {price !== null &&
             <TextInput
               dispatchType={priceDispatch}
@@ -55,6 +60,7 @@ export function ModalForm({
               value={price}
               title={inputPrice}
             />}
+          <Warning input={priceWarning} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
